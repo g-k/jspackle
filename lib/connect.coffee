@@ -103,7 +103,7 @@ module.exports = (confPath, urlPath)->
       serveJavaScript res, main
     else if url.match new RegExp "^#{urlPath}"
       source = url.replace(urlPath, '')
-      if source.match /^\/depends/
+      if source.match(/^\/depends/) and not source.match /http/
         source = source.replace /^\/depends/, ''
         folder = packageObj.opts.depends_folder
       else
