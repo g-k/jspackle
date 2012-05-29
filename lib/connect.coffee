@@ -64,6 +64,17 @@ serveCoffeeScript = (res, source)->
     error e, res
 
 ###
+Download and serve the CS or JS file.
+###
+serveHttp = (res, source, packageObj)->
+  @res = res
+  packageObj.httpGet source, (data, getResp) =>
+    serve = if source.match new RegExp '\.coffee$' then serveCoffeeScript else serveJavaScript
+    serve @res, data
+  return
+
+
+###
 Loads the source at the given path.
 ###
 loadSource = (sourcePath, res)->
@@ -103,7 +114,13 @@ module.exports = (confPath, urlPath)->
       serveJavaScript res, main
     else if url.match new RegExp "^#{urlPath}"
       source = url.replace(urlPath, '')
-      if source.match(/^\/depends/) and not source.match /http/
+
+      if source.match /http/
+        # Ignore whether depends or not
+        source = source.replace /^\/depends\//, ''
+        return serveHttp res, source, packageObj
+
+      if source.match(/^\/depends/)
         source = source.replace /^\/depends/, ''
         folder = packageObj.opts.depends_folder
       else
