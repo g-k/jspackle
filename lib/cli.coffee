@@ -32,6 +32,7 @@ module.exports = ->
     .option('-o, --build_output <build_output>', 'File to write built project')
     .option('-d, --include_depends', 'Should the dependencies be included in the build?')
     .option('-C, --coverage <coverage_plugin_path>', 'Path to JSTD coverage plugin to use')
+    .option('--no-clean', 'Leave build dir and JSTD conf')
 
   test = program
     .command('test')

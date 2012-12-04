@@ -234,6 +234,10 @@ class Package
   @memberOf Package.prototype
   ###
   clean: (flow)->
+    if not @opts.clean
+      logging.info "Leaving JSTD conf and build ..."
+      return
+
     logging.info "Cleaning up after jspackle run..."
     fs.unlink "#{@opts.root}JsTestDriver.conf", flow.MULTI()
     exec "rm -rf #{@opts.test_build_folder}", (err, stdout, stderr) ->

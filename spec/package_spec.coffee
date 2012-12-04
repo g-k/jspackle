@@ -35,6 +35,7 @@ describe 'Package', ->
       test_timeout: 90
 
     opts =
+      clean: true
       root: process.cwd()+'/'
       path: 'jspackle.json'
       first: 'a'
