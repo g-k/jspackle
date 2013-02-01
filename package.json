@@ -4,7 +4,7 @@
   "author": "Russ Posluszny <russ@russposluszny.com>",
   "main": "lib/index",
   "bin": {
-    "jspackle": "bin/jspackle"
+    "jspackle": "bin/jspackle.js"
   },
   "engines": {
     "node": "0.8.x"
