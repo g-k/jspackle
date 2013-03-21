@@ -53,31 +53,63 @@ describe 'Package', ->
       opts.source_folder = 'src'
       opts.test_build_folder = 'build'
       opts.sources = ['http://www.example.com/foo.js', 'foo.coffee', 'bar.coffee']
-      pack = new Package opts
-      srcs = pack.sources
 
-    it 'should return the same number of source files', ->
-      expect(srcs.length).toEqual opts.sources.length
+    describe 'without bare modules', ->
+      beforeEach ->
+        pack = new Package opts
+        srcs = pack.sources
 
-    it 'should return HTTP sources unchanged', ->
-      expect(srcs[0]).toEqual opts.sources[0]
+      it 'should return the same number of source files', ->
+        expect(srcs.length).toEqual opts.sources.length
 
-    it 'should return compiled coffeescript sources', ->
-      expect(srcs[1]).toEqual path.join(opts.test_build_folder, opts.source_folder, opts.sources[1].replace('.coffee', '.js'))
+      it 'should return HTTP sources unchanged', ->
+        expect(srcs[0]).toEqual opts.sources[0]
 
-    it 'should compile coffee from sources', ->
-      expect(stub.stubs['node-fs'].readFileSync).toHaveBeenCalled()
-      expect(stub.stubs['node-fs'].readFileSync.calls.length).toEqual 3 # +1 for the config file
-      expect(stub.stubs['node-fs'].readFileSync.calls[1].args[0]).toEqual 'src/'+opts.sources[1]
-      expect(stub.stubs['node-fs'].readFileSync.calls[2].args[0]).toEqual 'src/'+opts.sources[2]
-      expect(stub.stubs['coffee-script'].compile).toHaveBeenCalled()
+      it 'should return compiled coffeescript sources', ->
+        expect(srcs[1]).toEqual path.join(opts.test_build_folder, opts.source_folder, opts.sources[1].replace('.coffee', '.js'))
 
-    it 'should make the source directory in the test build directory', ->
-      expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src', 0777, true)
+      it 'should compile coffee from sources', ->
+        expect(stub.stubs['node-fs'].readFileSync).toHaveBeenCalled()
+        expect(stub.stubs['node-fs'].readFileSync.calls.length).toEqual 3 # +1 for the config file
+        expect(stub.stubs['node-fs'].readFileSync.calls[1].args[0]).toEqual 'src/'+opts.sources[1]
+        expect(stub.stubs['node-fs'].readFileSync.calls[2].args[0]).toEqual 'src/'+opts.sources[2]
+        expect(stub.stubs['coffee-script'].compile).toHaveBeenCalledWith(jasmine.any(String), bare: false)
 
-    it 'should write the compiled coffee to the build dir', ->
-      expect(stub.stubs['node-fs'].writeFileSync).toHaveBeenCalledWith('build/src/foo.js', {})
-      expect(stub.stubs['node-fs'].writeFileSync.calls[1].args).toEqual ['build/src/bar.js', {}]
+      it 'should make the source directory in the test build directory', ->
+        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src', 0777, true)
+
+      it 'should write the compiled coffee to the build dir', ->
+        expect(stub.stubs['node-fs'].writeFileSync).toHaveBeenCalledWith('build/src/foo.js', {})
+        expect(stub.stubs['node-fs'].writeFileSync.calls[1].args).toEqual ['build/src/bar.js', {}]
+
+    describe 'with bare modules', ->
+      beforeEach ->
+        opts.coffeeBare = true
+        pack = new Package opts
+        srcs = pack.sources
+
+      it 'should return the same number of source files', ->
+        expect(srcs.length).toEqual opts.sources.length
+
+      it 'should return HTTP sources unchanged', ->
+        expect(srcs[0]).toEqual opts.sources[0]
+
+      it 'should return compiled coffeescript sources', ->
+        expect(srcs[1]).toEqual path.join(opts.test_build_folder, opts.source_folder, opts.sources[1].replace('.coffee', '.js'))
+
+      it 'should compile coffee from sources', ->
+        expect(stub.stubs['node-fs'].readFileSync).toHaveBeenCalled()
+        expect(stub.stubs['node-fs'].readFileSync.calls.length).toEqual 3 # +1 for the config file
+        expect(stub.stubs['node-fs'].readFileSync.calls[1].args[0]).toEqual 'src/'+opts.sources[1]
+        expect(stub.stubs['node-fs'].readFileSync.calls[2].args[0]).toEqual 'src/'+opts.sources[2]
+        expect(stub.stubs['coffee-script'].compile).toHaveBeenCalledWith(jasmine.any(String), bare: true)
+
+      it 'should make the source directory in the test build directory', ->
+        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src', 0777, true)
+
+      it 'should write the compiled coffee to the build dir', ->
+        expect(stub.stubs['node-fs'].writeFileSync).toHaveBeenCalledWith('build/src/foo.js', {})
+        expect(stub.stubs['node-fs'].writeFileSync.calls[1].args).toEqual ['build/src/bar.js', {}]
 
   describe 'when loading configs fails', ->
 

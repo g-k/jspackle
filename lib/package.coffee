@@ -322,8 +322,9 @@ Output:
 
   _coffeeCompile: (src, buildFolder)->
     # Compiles a coffeescript file and writes it to buildFolder
+    coffeeOptions = bare: @opts.coffeeBare or false
     try
-      compiled = coffee.compile fs.readFileSync(src).toString()
+      compiled = coffee.compile fs.readFileSync(src).toString(), coffeeOptions
     catch e
       logging.critical "Cannot parse #{src} as valid CoffeeScript!"
       logging.critical e
