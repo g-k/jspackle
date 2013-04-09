@@ -98,14 +98,14 @@ module.exports = (confPath, urlPath)->
     url: urlPath
     include_depends: false
 
-  package = JSON.parse fs.readFileSync confPath
+  packageConf = JSON.parse fs.readFileSync confPath
   packageObj = new Package root: path.dirname(confPath)+'/', path: path.basename(confPath)
 
   ###
   Creates a main JavaScript file which synchronously loads all the
   development sources in order via XHR
   ###
-  _.extend configs, package
+  _.extend configs, packageConf
   main = ejs.render template, configs
 
   (req, res, next)->

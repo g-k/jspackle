@@ -76,7 +76,7 @@ describe 'Package', ->
         expect(stub.stubs['coffee-script'].compile).toHaveBeenCalledWith(jasmine.any(String), bare: false)
 
       it 'should make the source directory in the test build directory', ->
-        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src', 0777, true)
+        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src', 0x777, true)
 
       it 'should write the compiled coffee to the build dir', ->
         expect(stub.stubs['node-fs'].writeFileSync).toHaveBeenCalledWith('build/src/foo.js', {})
@@ -105,7 +105,7 @@ describe 'Package', ->
         expect(stub.stubs['coffee-script'].compile).toHaveBeenCalledWith(jasmine.any(String), bare: true)
 
       it 'should make the source directory in the test build directory', ->
-        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src', 0777, true)
+        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src', 0x777, true)
 
       it 'should write the compiled coffee to the build dir', ->
         expect(stub.stubs['node-fs'].writeFileSync).toHaveBeenCalledWith('build/src/foo.js', {})

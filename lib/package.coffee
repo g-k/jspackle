@@ -333,7 +333,7 @@ Output:
     fileName = pathLib.join buildFolder, src.replace('.coffee', '.js')
     filePath = pathLib.join buildFolder, pathLib.dirname src
 
-    fs.mkdirSync filePath, 0777, true
+    fs.mkdirSync filePath, 0x777, true
     logging.info "Compiling #{src} to '#{fileName}'"
     fs.writeFileSync fileName, compiled
     return fileName
