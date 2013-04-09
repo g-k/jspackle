@@ -13,7 +13,10 @@ runTest = (file)->
   filename = path.join __dirname, file+'.coffee'
   eval cs.compile filesys.readFileSync(filename).toString()
 
+
 describe 'Package', ->
+
+  allPermissions = octal0777 = 511
 
   beforeEach ->
     returned =
@@ -76,7 +79,7 @@ describe 'Package', ->
         expect(stub.stubs['coffee-script'].compile).toHaveBeenCalledWith(jasmine.any(String), bare: false)
 
       it 'should make the source directory in the test build directory', ->
-        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src')
+        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src', allPermissions, true)
 
       it 'should write the compiled coffee to the build dir', ->
         expect(stub.stubs['node-fs'].writeFileSync).toHaveBeenCalledWith('build/src/foo.js', {})
@@ -105,7 +108,7 @@ describe 'Package', ->
         expect(stub.stubs['coffee-script'].compile).toHaveBeenCalledWith(jasmine.any(String), bare: true)
 
       it 'should make the source directory in the test build directory', ->
-        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src')
+        expect(stub.stubs['node-fs'].mkdirSync).toHaveBeenCalledWith('build/src', allPermissions, true)
 
       it 'should write the compiled coffee to the build dir', ->
         expect(stub.stubs['node-fs'].writeFileSync).toHaveBeenCalledWith('build/src/foo.js', {})

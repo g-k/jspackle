@@ -333,7 +333,10 @@ Output:
     fileName = pathLib.join buildFolder, src.replace('.coffee', '.js')
     filePath = pathLib.join buildFolder, pathLib.dirname src
 
-    fs.mkdirSync filePath
+    # coffeescript chokes on: fs.mkdirSync filePath, 0o777, true
+    # with unexpected identifier so use an explicit variable
+    allPermissions = octal0777 = 511
+    fs.mkdirSync filePath, allPermissions, true
     logging.info "Compiling #{src} to '#{fileName}'"
     fs.writeFileSync fileName, compiled
     return fileName
