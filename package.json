@@ -13,7 +13,7 @@
     "coffee-script": "1.1.2",
     "commander": ">= 0.2.0 < 0.4.2",
     "flow": "0.2.2",
-    "ejs": "0.6.1",
+    "ejs": "3.1.3",
     "jasmine-node": "1.0.13",
     "node-fs": "latest",
     "restler": "0.2.3",
