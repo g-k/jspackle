@@ -18,7 +18,7 @@
     "node-fs": "latest",
     "restler": "0.2.3",
     "underscore": "1.2.0",
-    "uglify-js": "1.2.0",
+    "uglify-js": "3.10.0",
     "pyyaml": "0.0.1"
   },
   "devDependencies": {
